@@ -1,0 +1,17 @@
+.error-text {
+    font-size: 14px;
+    color: red;
+    margin-bottom: 20px;
+}
+
+.register-course .error-text{
+    padding-left: 230px;
+}
+
+.nav ul a.active {
+    background: #00afab;
+    transition: all 0.4s;
+    -webkit-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    color: white;
+}
