@@ -1,4 +1,4 @@
-import { createStore, combineReducers } from 'redux'
+import { createStore, combineReducers, applyMiddleware, compose } from 'redux'
 import authReducer from './reducer/authReducer'
 import courseReducer from './reducer/courseReducer'
 
@@ -9,10 +9,48 @@ let reducers = combineReducers({
 })
 
 
+let thunk = store => next => action => {
+    if (typeof action === 'function') {
+        return action(store.dispatch)
+    }
+
+    next(action)
+}
 
 
 
-export let store = createStore(reducers, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
+
+
+
+// function logger(store){
+//     return (action) => {
+//         return (next) => {
+
+//         }
+//     }
+// }
+
+
+// function logger(store) {
+//     // Must point to the function returned by the previous middleware:
+//     const next = store.dispatch
+
+//     return function dispatchAndLog(action) {
+//         console.log('dispatching', action)
+//         let result = next(action)
+//         console.log('next state', store.getState())
+//         return result
+//     }
+// }
+
+// let middleWare = store => action =
+
+
+const composeEnhancers =  typeof window === 'object' && window['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] ? 
+      window['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__']({ }) : compose;
+
+
+export let store = createStore(reducers, composeEnhancers(applyMiddleware(thunk)))
 
 
 

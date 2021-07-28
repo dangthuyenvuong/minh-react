@@ -10,7 +10,7 @@ export default function Header() {
     let { user } = useSelector(store => store.auth)
     let dispatch = useDispatch()
 
-
+    console.log(user)
     function _openLoginPopup() {
         document.querySelector('.popup-login').style.display = 'flex'
     }

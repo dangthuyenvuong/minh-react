@@ -1,29 +1,28 @@
-import React, { useState, useContext, useReducer } from 'react'
+import React, { useState, useContext, useReducer, useEffect } from 'react'
 import reactDOM from 'react-dom'
 import { useAuth } from '../../context/AuthContext'
 import { initialState, reducer } from './reducer'
 import { useDispatch, useSelector } from 'react-redux'
 import authService from '../../services/auth'
-import { loginHandle } from '../../redux/action/authAction'
+import { fetchLogin, loginHandle } from '../../redux/action/authAction'
 
 
 export default function LoginModal() {
 
-    // let { loginHandle } = useAuth()
 
     const storeDispatch = useDispatch()
 
-    let { errorLoginMessage } = useSelector(store => store.auth)
+    let { errorLoginMessage, login } = useSelector(store => store.auth)
 
     let [state, dispatch] = useReducer(reducer, initialState)
 
-    // let [form, setForm] = useState({
-    //     username: '',
-    //     password: ''
-    // })
-    // let [error, setError] = useState({})
+    useEffect(() => {
+        if(login){
+            _closePopup()
+        }
+    }, [login])
 
-    // let [errorMessage, setErrorMessage] = useState()
+  
 
     function _onChange(e) {
         let name = e.currentTarget.name
@@ -65,27 +64,8 @@ export default function LoginModal() {
 
         if (Object.keys(errorObj).length === 0) {
             try {
-
-
-                // let result = await loginHandle(form)
-
-                let res = await authService.login(form)
-
-                storeDispatch(loginHandle(res, () => {
-                    _closePopup()
-                }))
-
-                // if (result?.error) {
-                //     dispatch({
-                //         type: 'SET_ERROR_MESSAGE',
-                //         errorMessage: result.error
-                //     })
-                //     // setErrorMessage(result.error)
-                // } else {
-                //     _closePopup()
-                // }
-
-
+                
+                storeDispatch(fetchLogin(form))
 
             } catch (err) {
                 console.error(err)
